@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1109</width>
+    <height>595</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Лабораторная работа 1</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="title">
+       <string>Параметры генератора и ОА</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Фактическая загрузка системы</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLineEdit" name="res_theor_zagr">
+         <property name="placeholderText">
+          <string>*****</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Интенсивность</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="0" colspan="2">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLineEdit" name="res_exp_modelling_time">
+         <property name="placeholderText">
+          <string>*****</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QDoubleSpinBox" name="input_num_requests">
+         <property name="decimals">
+          <number>0</number>
+         </property>
+         <property name="minimum">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000000.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>500.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Генератор (Экспоненциальное распредление)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Ср. время ожидания в очереди</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>ОА (Вейбулла с параметром 2)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QDoubleSpinBox" name="input_intens_generator">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>1000.000000000000000</double>
+         </property>
+         <property name="value">
+          <double>2.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Теоретическая загрузка системы</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="0">
+        <widget class="QLineEdit" name="res_exp_mean_time_in_queue">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="placeholderText">
+          <string>*****</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Модельное время работы</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Количество заявок</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QDoubleSpinBox" name="input_intens_processor">
+         <property name="minimum">
+          <double>0.010000000000000</double>
+         </property>
+         <property name="value">
+          <double>3.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLineEdit" name="res_fact_zagr">
+         <property name="placeholderText">
+          <string>*****</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <layout class="QGridLayout" name="gridLayout"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Интенсивность </string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QPushButton" name="pushButton_model">
+         <property name="text">
+          <string>Моделировать</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QGroupBox" name="groupBox_4">
+      <property name="title">
+       <string>Результаты</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_5">
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Построить график зависимости среднего времени ожидания:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_graph_lambda">
+         <property name="text">
+          <string>от интенсивности генератора</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_graph_mu">
+         <property name="text">
+          <string>от интенсивности обслуживания</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0" colspan="2">
+        <spacer name="verticalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="0" colspan="2">
+        <widget class="QPushButton" name="pushButton_graph_workload">
+         <property name="text">
+          <string>от загрузки СМО</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

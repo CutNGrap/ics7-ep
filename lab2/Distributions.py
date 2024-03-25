@@ -1,10 +1,9 @@
-
+  
 from numpy.random import rayleigh, uniform, normal, exponential, weibull
 from numpy.random import rayleigh
 from scipy.stats import weibull_min
 import random
 import numpy as np
-
 
 # Рэлея
 class RayleighDistribution:
@@ -59,5 +58,4 @@ class WeibullDistribution:
     def generate(self):
         return weibull_min.rvs(self.k, loc=0, scale=self.lam)
     
-
 
