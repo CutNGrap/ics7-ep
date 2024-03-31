@@ -5,36 +5,10 @@ from Processor import Processor
 import math
 from matplotlib import pyplot
 
-# def modelling(clients_number, clients_proccessed, lambda_coming, lambda_obr): 
-#     sigma = (1/lambda_coming) * (math.pi / 2) ** (-1/2)
 
-#     k = 2
-#     lam = (1/lambda_obr) * math.log(2, math.e) ** (-1 / k)
+def natural_factor_from_normalized(x_norm, xmin, xmax):
+    return x_norm * (xmax - xmin) / 2 + (xmax + xmin) / 2
 
-#     generators = [
-#         Generator(
-#             ExpDistribution(sigma),
-#             clients_number,
-#         ), 
-#     ]
-
-#     operators = [
-#             Processor(
-#                 WeibullDistribution(k, lam)
-#             ),
-#         ]
-#     for generator in generators: 
-#         generator.receivers = operators.copy()
-
-#     model = Modeller(generators, operators)
-#     result = model.event_mode(clients_proccessed)
-#     print("Загрузка системы(расчетная): ", lambda_coming/lambda_obr, 
-#     "\nВремя работы:", result['time'], 
-#     "\nСреднее время ожидания: ", result['wait_time_middle'], 
-#     "\nКоличество обработанных заявок", clients_proccessed)
-#     return result
-
-# def modelling(num_requests, generator_intensity, generator_range, processor_intensity, processor_range):
 def modelling(clients_number, clients_proccessed, lambda_coming, lambda_obr):
 
     k = 2

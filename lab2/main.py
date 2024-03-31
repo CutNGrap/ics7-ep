@@ -7,9 +7,10 @@ from functions import *
 from PfeFrame import *
 root = Tk()
 experiment = PfeFrame(root)
-labelNorm= Label()
-labelNat= Label()
-
+labelNorm = Label()
+labelNat = Label()
+labelNorm1 = Label()
+labelNat1 = Label()
 
 varList = {
     "lambda": StringVar(),
@@ -68,7 +69,10 @@ def work_pfe(Event):
             mu_max=mu_max,
             mu_min=mu_min, 
             count=count, 
-            label1 = labelNorm
+            label1 = labelNorm,
+            label2=labelNorm1,
+            label3=labelNat,
+            label4=labelNat1
         )        
         add_button.config(state='normal')
     except ValueError:
@@ -112,6 +116,10 @@ def pfe_inputs(root):
     btn.grid(column=1, padx=10, pady=10) 
 
     labelNorm.grid(column=0, row = 3)
+    labelNorm1.grid(column = 0, row =4)
+
+    labelNat.grid(column=0, row = 6)
+    labelNat1.grid(column = 0, row =7)
 
 def draw_new_point(root):
     items = [
@@ -165,3 +173,31 @@ if __name__ == '__main__':
     
 
     
+
+
+    def run(self):
+        plan_matrix_normalized = self.create_plan_matrix()
+        print(plan_matrix_normalized)
+        experiment_results = np.zeros(M_SIZE)
+
+        for experiment_number, experiment_params in enumerate(plan_matrix_normalized):
+            gen_int = self.natural_factor_from_normalized(experiment_params[1], self.gen_int_min, self.gen_int_max)
+            gen_var = self.natural_factor_from_normalized(experiment_params[2], self.gen_var_min, self.gen_var_max)
+            proc_int = self.natural_factor_from_normalized(experiment_params[3], self.proc_int_min, self.proc_int_max)
+
+            middle = 1 / gen_int
+            range_var = gen_var
+            lambda_ = proc_int
+
+            cur_experiment_results = []
+            for _ in range(N_REPEATS):
+                generators = [Generator(distributions.UniformDistribution(middle, range_var))]
+                processors = [Processor(distributions.ExponentialDistribution(lambda_))]
+                modeller = Modeller(generators, processors)
+                cur_experiment_results.append(modeller.event_modelling(self.requests_amount)['mean_time_in_queue'])
+
+            experiment_results[experiment_number] = sum(cur_experiment_results) / N_REPEATS
+
+        full_results_table, self.coefficients, self.coef_natural = self.process_results(plan_matrix_normalized, experiment_results)
+
+        return full_results_table, self.coefficients, self.coef_natural

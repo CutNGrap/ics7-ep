@@ -80,7 +80,7 @@ class PfeFrame(tk.Frame):
 
         self.MainTable.set_row(5, line, 1)
 
-    def run(self, lambda_min, lambda_max, mu_min, mu_max, count, label1):
+    def run(self, lambda_min, lambda_max, mu_min, mu_max, count, label1, label2, label3, label4):
         self.lambda_max = lambda_max
         self.lambda_min = lambda_min
         self.mu_max = mu_max
@@ -134,7 +134,17 @@ class PfeFrame(tk.Frame):
         self.MainTable.set_row(5, ['','','','','','',
                                     '','','','','','',''], 1)
         
-        label1.config(text=f"y = {round(b0,4)}x0 + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+        label1.config(text=f"Нормированные: y_л = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2")
+        label2.config(text=f"Нормированные: y_чн = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+
+
+        # a0 = natural_factor_from_normalized(b0, )
+
+        # label3.config(text=f"Натуральные: y_л = {round(b0,4)}x0 + {round(b1,4)}x1 + {round(b2,4)}x2")
+        # label4.config(text=f"Натуральные: y_чн = {round(b0,4)}x0 + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+
+
+
 
     def count_b(self, x, y): 
         sum = 0
