@@ -7,10 +7,13 @@ from functions import *
 from PfeFrame import *
 root = Tk()
 experiment = PfeFrame(root)
-labelNorm = Label()
-labelNat = Label()
-labelNorm1 = Label()
-labelNat1 = Label()
+label1 = Label(text= "Регрессия")
+label2 = Label(text = "Линейная")
+label3 = Label(text = "Частично нелинейная")
+labelNormLin = Label()
+labelNatLin  = Label()
+labelNormPart = Label()
+labelNatPart = Label()
 
 varList = {
     "lambda": StringVar(),
@@ -69,10 +72,10 @@ def work_pfe(Event):
             mu_max=mu_max,
             mu_min=mu_min, 
             count=count, 
-            label1 = labelNorm,
-            label2=labelNorm1,
-            label3=labelNat,
-            label4=labelNat1
+            label1 = labelNormLin,
+            label2=labelNormPart,
+            label3=labelNatLin,
+            label4=labelNatPart
         )        
         add_button.config(state='normal')
     except ValueError:
@@ -88,12 +91,12 @@ def pfe_inputs(root):
     t.grid(column=1,  padx=10, pady=10)
     frame_inputs = Frame(root)
     items_1 = [
-        i.Item(text="Минимум:", var=varList["lambda_min"], value=1), 
+        i.Item(text="Минимум:", var=varList["lambda_min"], value=10), 
         i.Item(text="Максимум:", var=varList["lambda_max"], value=30), 
     ]
     items_2 = [
-        i.Item(text="Минимум:", var=varList["mu_min"], value=95), 
-        i.Item(text="Максимум:", var=varList["mu_max"], value=105), 
+        i.Item(text="Минимум:", var=varList["mu_min"], value=100), 
+        i.Item(text="Максимум:", var=varList["mu_max"], value=110), 
     ]
     i_list_1 = i.InputList(master=frame_inputs, items=items_1, title="Интенсивность поступления заявок")
     i_list_2 = i.InputList(master=frame_inputs, items=items_2, title="Интенсивность обработки заявок")
@@ -115,16 +118,20 @@ def pfe_inputs(root):
       
     btn.grid(column=1, padx=10, pady=10) 
 
-    labelNorm.grid(column=0, row = 3)
-    labelNorm1.grid(column = 0, row =4)
+    label1.grid(column=0, row = 2)
+    label2.grid(column=0, row = 3)
 
-    labelNat.grid(column=0, row = 6)
-    labelNat1.grid(column = 0, row =7)
+    labelNormLin.grid(column=0, row = 4)
+    labelNormPart.grid(column = 0, row =5)
+
+    label3.grid(column=0, row = 6)
+    labelNatLin.grid(column=0, row = 7)
+    labelNatPart.grid(column = 0, row =8)
 
 def draw_new_point(root):
     items = [
-        i.Item(text="Интенсивность поступления заявок:", var=varList["lambda"], value=15),
-        i.Item(text="Интенсивность обслуживания заявок:", var=varList["mu"], value=100),
+        i.Item(text="Интенсивность поступления заявок:", var=varList["lambda"], value=20),
+        i.Item(text="Интенсивность обслуживания заявок:", var=varList["mu"], value=105),
     ]
     i_list = i.InputList(master=root, items=items, title="Добавление точки факторного пространства")
     i_list.grid(column=1)

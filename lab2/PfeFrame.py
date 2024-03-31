@@ -134,14 +134,25 @@ class PfeFrame(tk.Frame):
         self.MainTable.set_row(5, ['','','','','','',
                                     '','','','','','',''], 1)
         
-        label1.config(text=f"Нормированные: y_л = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2")
-        label2.config(text=f"Нормированные: y_чн = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+        label1.config(text=f"y_норм = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2")
+        label3.config(text=f"y_норм = {round(b0,4)} + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+
+        xm1 = (lambda_max + lambda_min) / 2
+        xd1 = (lambda_max - lambda_min) / 2
+        
+        xm2 = (mu_max + mu_min) / 2
+        xd2 = (mu_max - mu_min) / 2
+
+        coef = b12 / xd1 / xd2
+
+        a0 = b0 - xm1*b1/xd1 - xm2*b2/xd2 - coef*xm1*xm2
+        a1 = b1/xd1 - coef*xm2
+        a2 = b2/xd2 - coef*xm1
+        a12 = coef
 
 
-        # a0 = natural_factor_from_normalized(b0, )
-
-        # label3.config(text=f"Натуральные: y_л = {round(b0,4)}x0 + {round(b1,4)}x1 + {round(b2,4)}x2")
-        # label4.config(text=f"Натуральные: y_чн = {round(b0,4)}x0 + {round(b1,4)}x1 + {round(b2,4)}x2 + {round(b12,4)}x1x2")
+        label2.config(text=f"y_натур = {round(a0,4)} + {round(a1,4)}x1 + {round(a2,4)}x2")
+        label4.config(text=f"y_натур = {round(a0,4)} + {round(a1,4)}x1 + {round(a2,4)}x2 + {round(a12,6)}x1x2")
 
 
 
