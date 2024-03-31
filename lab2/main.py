@@ -91,12 +91,12 @@ def pfe_inputs(root):
     t.grid(column=1,  padx=10, pady=10)
     frame_inputs = Frame(root)
     items_1 = [
-        i.Item(text="Минимум:", var=varList["lambda_min"], value=10), 
-        i.Item(text="Максимум:", var=varList["lambda_max"], value=30), 
+        i.Item(text="Минимум:", var=varList["lambda_min"], value=5), 
+        i.Item(text="Максимум:", var=varList["lambda_max"], value=35), 
     ]
     items_2 = [
-        i.Item(text="Минимум:", var=varList["mu_min"], value=100), 
-        i.Item(text="Максимум:", var=varList["mu_max"], value=110), 
+        i.Item(text="Минимум:", var=varList["mu_min"], value=95), 
+        i.Item(text="Максимум:", var=varList["mu_max"], value=105), 
     ]
     i_list_1 = i.InputList(master=frame_inputs, items=items_1, title="Интенсивность поступления заявок")
     i_list_2 = i.InputList(master=frame_inputs, items=items_2, title="Интенсивность обработки заявок")
@@ -131,7 +131,7 @@ def pfe_inputs(root):
 def draw_new_point(root):
     items = [
         i.Item(text="Интенсивность поступления заявок:", var=varList["lambda"], value=20),
-        i.Item(text="Интенсивность обслуживания заявок:", var=varList["mu"], value=105),
+        i.Item(text="Интенсивность обслуживания заявок:", var=varList["mu"], value=100),
     ]
     i_list = i.InputList(master=root, items=items, title="Добавление точки факторного пространства")
     i_list.grid(column=1)
