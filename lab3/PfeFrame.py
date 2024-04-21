@@ -24,18 +24,37 @@ class PfeFrame(tk.Frame):
             master=self, 
             highlightbackground="lightgrey", 
             highlightthickness=1)
+        
+        notm = tk.Label(  self.formula_frame, text="Нормированные ")
+        notm.grid(row=0, column=0, sticky="e")
 
         self.lin_formula = tk.StringVar()
         self.not_lin_formula = tk.StringVar()
         lin_label = tk.Label(  self.formula_frame, text="Линейная модель: ")
-        lin_label.grid(row=0, column=0, sticky="e")
+        lin_label.grid(row=1, column=0, sticky="e")
         lin_formula_label = tk.Label(self.formula_frame, textvariable=self.lin_formula)
-        lin_formula_label.grid(row=0, column=1, sticky="w")
+        lin_formula_label.grid(row=1, column=1, sticky="w")
 
         not_lin_label = tk.Label(self.formula_frame, text="Частично нелинейная модель: ")
-        not_lin_label.grid(row=1, column=0, sticky="e")
+        not_lin_label.grid(row=2, column=0, sticky="e")
         not_lin_formula_label = tk.Label(self.formula_frame, textvariable=self.not_lin_formula)
-        not_lin_formula_label.grid(row=1, column=1, sticky="w")
+        not_lin_formula_label.grid(row=2, column=1, sticky="w")
+
+        nat = tk.Label(  self.formula_frame, text="Натуральные ")
+        nat.grid(row=3, column=0, sticky="e")
+
+        self.lin_formula1 = tk.StringVar()
+        self.not_lin_formula1 = tk.StringVar()
+        lin_label1 = tk.Label(  self.formula_frame, text="Линейная модель: ")
+        lin_label1.grid(row=4, column=0, sticky="e")
+        lin_formula_label1 = tk.Label(self.formula_frame, textvariable=self.lin_formula1)
+        lin_formula_label1.grid(row=4, column=1, sticky="w")
+
+        not_lin_label1 = tk.Label(self.formula_frame, text="Частично нелинейная модель: ")
+        not_lin_label1.grid(row=5, column=0, sticky="e")
+        not_lin_formula_label1 = tk.Label(self.formula_frame, textvariable=self.not_lin_formula1)
+        not_lin_formula_label1.grid(row=5, column=1, sticky="w")
+
 
         self.formula_frame.grid(column=0, row=2)
 
@@ -236,6 +255,40 @@ class PfeFrame(tk.Frame):
 
         self.lin_formula.set(lin_str)
         self.not_lin_formula.set(not_lin_str)
+
+        # ============================================
+        xm = [0, (lambda_max+lambda_min)/2, (mu_max+mu_min)/2, 
+              (lambda2_max+lambda2_min)/2,  (mu2_max+mu2_min)/2,]
+        
+        xd = [0, (lambda_max-lambda_min)/2, (mu_max-mu_min)/2,
+              (lambda2_max-lambda2_min)/2, (mu2_max-mu2_min)/2,]
+
+        a1 = norm_to_nat_pfe(xm, xd, b)
+        a = norm_to_nat_dfe_lin(xm, xd, b)
+
+        lin_str = "y = " + str('{:.5f}'.format(a[0]))
+        for i in range (1, 5): 
+            if (a[i] > 0):
+                lin_str += " + " + str('{:.5f}'.format(a[i])) + " * x" + str(i)
+            else: 
+                lin_str += " - " + str('{:.5f}'.format(math.fabs(a[i]))) + " * x" + str(i)
+        
+        print(lin_str)
+        x_indexes = ["0", "1", "2", "3", "4", 
+             "12","13","14", "23", "24", "34", 
+             "123","124","134", "234", "1234",]
+        not_lin_str = "y = " + str('{:.5g}'.format(a1[0]))
+        for i in range (1, len(a1)):
+            if i == round(len(a1)/2):
+                not_lin_str += '\n' 
+            if (a1[i] > 0):
+                not_lin_str += " + " + str('{:.5g}'.format(a1[i])) + " * x" + x_indexes[i]
+            else: 
+                not_lin_str += " - " + str('{:.5g}'.format(math.fabs(a1[i]))) + " * x" + x_indexes[i]
+        print(not_lin_str)
+
+        self.lin_formula1.set(lin_str)
+        self.not_lin_formula1.set(not_lin_str)
         
             
 

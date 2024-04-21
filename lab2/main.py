@@ -177,9 +177,6 @@ if __name__ == '__main__':
     experiment.grid(row=1, column=0, columnspan=2,   padx=10, pady=10)
 
     root.mainloop()
-    
-
-    
 
 
     def run(self):

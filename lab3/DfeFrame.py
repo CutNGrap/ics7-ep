@@ -26,17 +26,35 @@ class DfeFrame(tk.Frame):
             highlightbackground="lightgrey", 
             highlightthickness=1)
 
+        notm = tk.Label(  self.formula_frame, text="Нормированные ")
+        notm.grid(row=0, column=0, sticky="e")
+
         self.lin_formula = tk.StringVar()
         self.not_lin_formula = tk.StringVar()
         lin_label = tk.Label(  self.formula_frame, text="Линейная модель: ")
-        lin_label.grid(row=0, column=0, sticky="e")
+        lin_label.grid(row=1, column=0, sticky="e")
         lin_formula_label = tk.Label(self.formula_frame, textvariable=self.lin_formula)
-        lin_formula_label.grid(row=0, column=1, sticky="w")
+        lin_formula_label.grid(row=1, column=1, sticky="w")
 
         not_lin_label = tk.Label(self.formula_frame, text="Частично нелинейная модель: ")
-        not_lin_label.grid(row=1, column=0, sticky="e")
+        not_lin_label.grid(row=2, column=0, sticky="e")
         not_lin_formula_label = tk.Label(self.formula_frame, textvariable=self.not_lin_formula)
-        not_lin_formula_label.grid(row=1, column=1, sticky="w")
+        not_lin_formula_label.grid(row=2, column=1, sticky="w")
+
+        nat = tk.Label(  self.formula_frame, text="Натуральные ")
+        nat.grid(row=3, column=0, sticky="e")
+
+        self.lin_formula1 = tk.StringVar()
+        self.not_lin_formula1 = tk.StringVar()
+        lin_label1 = tk.Label(  self.formula_frame, text="Линейная модель: ")
+        lin_label1.grid(row=4, column=0, sticky="e")
+        lin_formula_label1 = tk.Label(self.formula_frame, textvariable=self.lin_formula1)
+        lin_formula_label1.grid(row=4, column=1, sticky="w")
+
+        not_lin_label1 = tk.Label(self.formula_frame, text="Частично нелинейная модель: ")
+        not_lin_label1.grid(row=5, column=0, sticky="e")
+        not_lin_formula_label1 = tk.Label(self.formula_frame, textvariable=self.not_lin_formula1)
+        not_lin_formula_label1.grid(row=5, column=1, sticky="w")
 
         self.formula_frame.grid(column=0, row=2, padx=10, pady=10)
 
@@ -176,6 +194,11 @@ class DfeFrame(tk.Frame):
         self.x_table2 =( [x0] + [x1] + [x2] + [x3] + [x4] 
                         + [x12] + [x13] + [x14] + [x23] + [x24] + [x34] 
                         + [x123] + [x124] + [x134] + [x234] + [x1234] )
+        
+        self.x_table3 =( [x0] + [x1] + [x2] + [x3]
+                        + [x12] + [x13] + [x23]
+                        + [x123] )
+        
         self.set_x_values()
 
 
@@ -194,13 +217,14 @@ class DfeFrame(tk.Frame):
         self.MainTable.set_column(12, y)
         self.b = b
 
-        b_nl = [b/2 for b  in self.b] +  [b[i]/2 for i in range(len(b)-1, -1, -1)]
+        # b_nl = [b/2 for b  in self.b] +  [b[i]/2 for i in range(len(b)-1, -1, -1)]
+        b_nl = b
         print(b_nl)
         self.b_nl = b_nl
 
         # Считаем линейную и частично не линейную модели
-        y_lin = self.count_lin(self.x_table2, b, lin_count+1)
-        y_nl = self.count_lin(self.x_table2, b_nl, len(b_nl))
+        y_lin = self.count_lin(self.x_table3, b, lin_count+1)
+        y_nl = self.count_lin(self.x_table3, b_nl, len(b_nl))
         
         y_lin_per = [abs(y[i] - y_lin[i]) for i in range(len(y))]
         y_nl_per = [abs(y[i] - y_nl[i]) for i in range(len(y))]
@@ -223,8 +247,8 @@ class DfeFrame(tk.Frame):
         
         print(lin_str)
         x_indexes = ["0", "1", "2", "3", "4", 
-             "12","13","14", "23", "24", "34", 
-             "123","124","134", "234", "1234",]
+             "12","13", "23",
+             "123",]
         not_lin_str = "y = " + str('{:.5g}'.format(b[0]))
         for i in range (1, len(b_nl)):
             if i == round(len(b_nl)/2):
@@ -237,7 +261,42 @@ class DfeFrame(tk.Frame):
 
         self.lin_formula.set(lin_str)
         self.not_lin_formula.set(not_lin_str)
+
+        # ========================================
+
+        xm = [0, (lambda_max+lambda_min)/2, (mu_max+mu_min)/2, 
+              (lambda2_max+lambda2_min)/2,  (mu2_max+mu2_min)/2,]
         
+        xd = [0, (lambda_max-lambda_min)/2, (mu_max-mu_min)/2,
+              (lambda2_max-lambda2_min)/2, (mu2_max-mu2_min)/2,]
+
+        a1 = norm_to_nat_dfe(xm, xd, b)
+
+        a = norm_to_nat_dfe_lin(xm, xd, b)
+
+        lin_str = "y = " + str('{:.5f}'.format(a[0]))
+        for i in range (1, 4 + 1): 
+            if (a[i] > 0):
+                lin_str += " + " + str('{:.5f}'.format(a[i])) + " * x" + str(i)
+            else: 
+                lin_str += " - " + str('{:.5f}'.format(math.fabs(a[i]))) + " * x" + str(i)
+        
+        print(lin_str)
+        x_indexes = ["0", "1", "2", "3", 
+             "12","13","23",
+             "123",]
+        not_lin_str = "y = " + str('{:.5g}'.format(a1[0]))
+        for i in range (1, len(a1) - 1):
+            if i == round(len(a1)/2):
+                not_lin_str += '\n' 
+            if (a1[i] > 0):
+                not_lin_str += " + " + str('{:.5g}'.format(a1[i])) + " * x" + x_indexes[i]
+            else: 
+                not_lin_str += " - " + str('{:.5g}'.format(math.fabs(a1[i]))) + " * x" + x_indexes[i]
+        print(not_lin_str)
+        
+        self.lin_formula1.set(lin_str)
+        self.not_lin_formula1.set(not_lin_str)
             
 
     def count_b(self, x, y): 

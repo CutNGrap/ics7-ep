@@ -73,3 +73,128 @@ def view(start, end, N):
     pyplot.xlabel("Коэффициент загрузки")
     pyplot.ylabel("Среднее время пребывания в очереди")
     pyplot.show()
+
+def norm_to_nat_pfe(xm, xd, b):
+    m, d = xm, xd
+    delta_x = d
+    average_x = m
+    b_denorm = np.array(b)
+    b_denorm[0] /= 1
+    b_denorm[1] /= delta_x[1]
+    b_denorm[2] /= delta_x[2]
+    b_denorm[3] /= delta_x[3]
+    b_denorm[4] /= delta_x[4]
+    b_denorm[5] /= delta_x[1] * delta_x[2]
+    b_denorm[6] /= delta_x[1] * delta_x[3]
+    b_denorm[7] /= delta_x[1] * delta_x[4]
+    b_denorm[8] /= delta_x[2] * delta_x[3]
+    b_denorm[9] /= delta_x[2] * delta_x[4]
+    b_denorm[10] /= delta_x[3] * delta_x[4]
+    b_denorm[11] /= delta_x[1] * delta_x[2] * delta_x[3]
+    b_denorm[12] /= delta_x[1] * delta_x[2] * delta_x[4]
+    b_denorm[13] /= delta_x[1] * delta_x[3] * delta_x[4]
+    b_denorm[14] /= delta_x[2] * delta_x[3] * delta_x[4]
+    b_denorm[15] /= delta_x[1] * delta_x[2] * delta_x[3] * delta_x[4]
+    hash_table = {(1): 1, (2): 2, (3): 3, (4): 4, (1, 2): 5, (1, 3): 6, (1, 4): 7, (2, 3): 8, (2, 4): 9, (3, 4): 10, (1, 2, 3): 11, (1, 2, 4): 12, (1, 3, 4): 13, (2, 3, 4): 14, (1, 2, 3, 4): 15}
+    b_natural = b_denorm.copy()
+    # 0-взаимодействие
+    for i in range(1, len(delta_x)):
+        b_natural[0] -= b_denorm[hash_table[(i)]] * average_x[i]
+    
+    # 1-взаимодействие
+    for i in range(1, len(delta_x)):
+        for j in range(i + 1, len(delta_x)):
+            b_natural[0] += b_denorm[hash_table[(i, j)]] * average_x[i] * average_x[j]
+            b_natural[hash_table[(i)]] -= b_denorm[hash_table[(i, j)]] * average_x[j]
+            b_natural[hash_table[(j)]] -= b_denorm[hash_table[(i, j)]] * average_x[i]
+    
+    # 2-взаимодействие
+    for i in range(1, len(delta_x)):
+        for j in range(i + 1, len(delta_x)):
+            for k in range(j + 1, len(delta_x)):
+                b_natural[0] -= b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[j] * average_x[k]
+                b_natural[hash_table[(i)]] += b_denorm[hash_table[(i, j, k)]] * average_x[j] * average_x[k]
+                b_natural[hash_table[(j)]] += b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[k]
+                b_natural[hash_table[(k)]] += b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[j]
+                b_natural[hash_table[(i, j)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[k]
+                b_natural[hash_table[(i, k)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[j]
+                b_natural[hash_table[(j, k)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[i]
+    
+    # 3-взаимодействие
+    b_natural[0] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[2] * average_x[3] * average_x[4]
+    b_natural[hash_table[(1)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[2] * average_x[3] * average_x[4]
+    b_natural[hash_table[(2)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[3] * average_x[4]
+    b_natural[hash_table[(3)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[2] * average_x[4]
+    b_natural[hash_table[(4)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[2] * average_x[3]
+    b_natural[hash_table[(1, 2)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[3] * average_x[4]
+    b_natural[hash_table[(1, 3)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[2] * average_x[4]
+    b_natural[hash_table[(1, 4)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[2] * average_x[3]
+    b_natural[hash_table[(2, 3)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[4]
+    b_natural[hash_table[(2, 4)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[3]
+    b_natural[hash_table[(3, 4)]] += b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1] * average_x[2]
+    b_natural[hash_table[(1, 2, 3)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[4]
+    b_natural[hash_table[(1, 2, 4)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[3]
+    b_natural[hash_table[(1, 3, 4)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[2]
+    b_natural[hash_table[(2, 3, 4)]] -= b_denorm[hash_table[(1, 2, 3, 4)]] * average_x[1]
+
+    return b_natural
+
+
+def norm_to_nat_dfe(xm, xd, b):
+    m, d = xm, xd
+    delta_x = d
+    average_x = m
+    n = 3
+    b_denorm = np.array(b[:5 + n] + [0] + b[5 + n:])
+
+    b_denorm[0] /= 1
+    b_denorm[1] /= delta_x[1]
+    b_denorm[2] /= delta_x[2]
+    b_denorm[3] /= delta_x[3]
+    b_denorm[4] /= delta_x[4]
+    b_denorm[5] /= delta_x[1] * delta_x[2]
+    b_denorm[6] /= delta_x[1] * delta_x[3]
+    b_denorm[7] /= delta_x[2] * delta_x[3]
+    b_denorm[8] /= delta_x[1] * delta_x[2] * delta_x[3]
+    lst = [(1, 2), (1, 3), (2, 3), (1, 2, 3)]
+    hash_table = {(1): 1, (2): 2, (3): 3, (4): 4, (1, 2): 5, (1, 3): 6, (2, 3): 7, (1, 2, 3): 8}
+    b_natural = b_denorm.copy()
+    # 0-взаимодействие
+    for i in range(1, len(delta_x)):
+        b_natural[0] -= b_denorm[hash_table[(i)]] * average_x[i]
+    
+    # 1-взаимодействие
+    for interaction in lst[:3]:
+        i, j = interaction
+        b_natural[0] += b_denorm[hash_table[(i, j)]] * average_x[i] * average_x[j]
+        b_natural[hash_table[(i)]] -= b_denorm[hash_table[(i, j)]] * average_x[j]
+        b_natural[hash_table[(j)]] -= b_denorm[hash_table[(i, j)]] * average_x[i]
+    
+    # 2-взаимодействие
+    i, j, k = (1, 2, 3)
+    b_natural[0] -= b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[j] * average_x[k]
+    b_natural[hash_table[(i)]] += b_denorm[hash_table[(i, j, k)]] * average_x[j] * average_x[k]
+    b_natural[hash_table[(j)]] += b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[k]
+    b_natural[hash_table[(k)]] += b_denorm[hash_table[(i, j, k)]] * average_x[i] * average_x[j]
+    b_natural[hash_table[(i, j)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[k]
+    b_natural[hash_table[(i, k)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[j]
+    b_natural[hash_table[(j, k)]] -= b_denorm[hash_table[(i, j, k)]] * average_x[i]
+
+    return b_natural
+
+
+def norm_to_nat_dfe_lin(xm, xd, b):
+    m, d = xm, xd
+
+    a = [0 for i in range(5)]
+
+    s = 0
+    for i in range(1,5):
+        s += b[i] * m[i] / d[i]
+
+    a[0] += b[0] - s
+
+    for i in range(1, 5):
+        a[i] = b[i] / d[i]
+
+    return a

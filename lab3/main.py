@@ -102,14 +102,14 @@ def pfe_inputs(root):
         i.Item(text="Минимум:", var=varList["mu2_min"], value=95), 
         i.Item(text="Максимум:", var=varList["mu2_max"], value=105), 
     ]
-    i_list_1 = i.InputList(master=frame_inputs, items=items_1, title="Интенсивность поступления заявок 1")
-    i_list_2 = i.InputList(master=frame_inputs, items=items_2, title="Интенсивность поступления заявок 2")
-    i_list_3 = i.InputList(master=frame_inputs, items=items_3, title="Интенсивность обработки заявок 1")
-    i_list_4 = i.InputList(master=frame_inputs, items=items_4, title="Интенсивность обработки заявок 2")
+    i_list_1 = i.InputList(master=frame_inputs, items=items_1, title="Интенсивность поступления заявок 1 (x1)")
+    i_list_2 = i.InputList(master=frame_inputs, items=items_2, title="Интенсивность поступления заявок 2 (x3)")
+    i_list_3 = i.InputList(master=frame_inputs, items=items_3, title="Интенсивность обработки заявок 1 (x2)")
+    i_list_4 = i.InputList(master=frame_inputs, items=items_4, title="Интенсивность обработки заявок 2 (x4)")
 
     i_list_1.pack(side=LEFT, padx=10)
-    i_list_2.pack(side=LEFT,  padx=10)
     i_list_3.pack(side=LEFT,  padx=10)
+    i_list_2.pack(side=LEFT,  padx=10)
     i_list_4.pack(side=LEFT,  padx=10)
 
     frame_inputs.grid(column=1)
@@ -150,18 +150,19 @@ def work_view(Event):
     )
 
 def expirement_list(root): 
-    items = [
-        i.Item(text="От:", var=varList["start"], value=0.01), 
-        i.Item(text="До:", var=varList["end"], value=1.1), 
-        i.Item(text="Число заявок:", var=varList["N_exp"], value=1000)
-    ]
+    pass
+#     items = [
+#         i.Item(text="От:", var=varList["start"], value=0.01), 
+#         i.Item(text="До:", var=varList["end"], value=1.1), 
+#         i.Item(text="Число заявок:", var=varList["N_exp"], value=1000)
+#     ]
 
-    i_list = i.InputList(master=root, items=items)
-    i_list.grid(column=1)
+#     i_list = i.InputList(master=root, items=items)
+#     i_list.grid(column=1)
 
-    btn2 = Button(root, text="Запуск")
-    btn2.bind("<Button-1>", work_view)       
-    btn2.grid(column=1, padx=10, pady=10) 
+#     btn2 = Button(root, text="Запуск")
+#     btn2.bind("<Button-1>", work_view)       
+#     btn2.grid(column=1, padx=10, pady=10) 
 
 if __name__ == '__main__':
     f_view = Frame(root, highlightbackground="lightgrey", highlightthickness=1)
